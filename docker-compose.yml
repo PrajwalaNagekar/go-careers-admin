@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  gocareer-admin:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gocareer-admin
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - NODE_ENV=production
+      - PORT=80
+    volumes:
+      - ./src/frontend/dist:/app/dist:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/index.html"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    networks:
+      - gocareer-network
+
+  # Optional: Add reverse proxy (nginx)
+  nginx:
+    image: nginx:alpine
+    container_name: gocareer-nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./src/frontend/dist:/usr/share/nginx/html:ro
+    depends_on:
+      - gocareer-admin
+    networks:
+      - gocareer-network
+    restart: unless-stopped
+
+networks:
+  gocareer-network:
+    driver: bridge

@@ -1,0 +1,15 @@
+[build]
+  command = "cd src/frontend && pnpm install && pnpm run build"
+  publish = "src/frontend/dist"
+
+[build.environment]
+  NODE_VERSION = "18.17.0"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[dev]
+  command = "cd src/frontend && npm run dev"
+  port = 3000
