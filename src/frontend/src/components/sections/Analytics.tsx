@@ -70,7 +70,7 @@ export default function Analytics() {
                     {stat.value}
                   </p>
                   <p className="text-xs font-medium mt-1 text-green-600">
-                    {stat.delta} vs last year
+                    {stat.delta} vs last year  
                   </p>
                 </div>
                 <div
